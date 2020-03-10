@@ -1,29 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from selenium import webdriver
-from time import sleep
 import pickle
+from time import sleep
+
+from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
 
-def login():
-    print('Введите сначала ваш логин от YTMonster, а потом пароль')
-    passyt = input('Логин: ')
-    logyt = input('Пароль: ')
-    with open('pass_yt.txt', 'w') as file:
-        file.write(passyt)
-    with open('log_yt.txt', 'w') as file:
-        file.write(logyt)
-    print('Отлично! Теперь, войдите вручную в ваш гугл аккаунт (Сейчас появится браузер)')
-    driver = webdriver.Chrome()
-    driver.get("https://www.youtube.com/")
-    input('Войдите как обычно, а потом нажмите Enter. Если вам пишут, что вход небезопасен, то создайте новый аккаунт.')
-    pickle.dump(driver.get_cookies(), open("cookiesgoogle.pkl", "wb"))
-    print('Вход удался!')
-    driver.quit()
 
-def likes():
+def func():
     print('Вход в систему...')
     chrome_options = Options()
     chrome_options.add_argument("--headless")
@@ -85,30 +70,5 @@ def likes():
         print('Задание выполенено!')
         driver.switch_to.window(handles[0])
 
-print('Вы уже входили в YtMonster и Google в данной программе?')
-print('''
-1. Да 
-2. Нет
-''')
 while True:
-    try:
-        flogin = int(input('Введите число: '))
-    except:
-        print('Вы ввели литеральное значение/ничего не ввели, введите число!')
-        continue
-    if flogin == 1:
-        try:
-            print('''1. Выполнять лайки
-2. Выполнять подписки (Не готово)''')
-            menu_pick = int(input('Введите число: '))
-            if menu_pick == 1:
-                likes()
-            elif menu_pick >= 1:
-                print('Введите указанное число')
-            elif menu_pick <= 1:
-                print('Введите указанное число')
-        except:
-            print('Вы ввели литеральное значение/ничего не ввели, введите число!')
-            continue
-    elif flogin == 2:
-            login()
+    func()
