@@ -11,7 +11,6 @@ from selenium.webdriver.chrome.options import Options
 def func():
     print('Вход в систему...')
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument('--disable-audio-output')
     driver = webdriver.Chrome(options=chrome_options)
@@ -70,18 +69,13 @@ def func():
                 sleep(6)
         sleep(10)
         handles = driver.window_handles
-        if [1] in handles:
-            pass
-        else:
-            print('Задания выполнять пока нельзя!')
-            sleep(60)
-            continue
+        print(handles)
         try:
             driver.switch_to.window(handles[1])
         except:
-            print('Произошла ошибка! Производим перезапуск...')
-            driver.quit()
-            return
+            print('Задания пока недоступны')
+            sleep(2)
+            continue
         print('Задание началось')
         sleep(1)
         try:
