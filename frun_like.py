@@ -11,8 +11,9 @@ from selenium.webdriver.chrome.options import Options
 def func():
     print('Вход в систему...')
     chrome_options = Options()
+    chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument('--enable-tab-audio-muting')
+    chrome_options.add_argument('--disable-audio-output')
     driver = webdriver.Chrome(options=chrome_options)
     with open('pass_yt.txt', 'r') as file:
         passyt = file.read()
@@ -28,7 +29,12 @@ def func():
         except:
             break
     sleep(1)
-    driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/ul/li[2]/a').click()
+    while True:
+        try:
+            driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[2]/ul/li[2]/a').click()
+            break
+        except:
+            driver.refresh()
     sleep(1)
     driver.find_element_by_xpath('/html/body/div[6]/div[2]/div[1]/input[1]').send_keys(logyt)
     driver.find_element_by_xpath('/html/body/div[6]/div[2]/div[1]/input[2]').send_keys(passyt)
@@ -42,8 +48,15 @@ def func():
             del cookie['expiry']
             driver.add_cookie(cookie)
     driver.refresh()
-    print('Вход успешен!')
     driver.get('https://ytmonster.ru/task')
+    try:
+        driver.find_element_by_css_selector('#news > div > div > div > div.col-lg-2.ml-lg-auto > div > img')
+        print('Вход в YtMonster не был произведен, начинаем программу заново...')
+        driver.quit()
+        return
+    except:
+        pass
+    print('Вход успешен!')
     sleep(2)
     while True:
         while True:
@@ -69,18 +82,19 @@ def func():
             print('Произошла ошибка! Производим перезапуск...')
             driver.quit()
             return
+        print('Задание началось')
         sleep(1)
         try:
             driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer.style-scope.ytd-menu-renderer.force-icon-button.style-default-active > a')
             print('Лайк уже поставлен! Ждем 35 сек. и идем дальше.')
-            sleep()
+            sleep(35)
             driver.close()
             driver.switch_to.window(handles[0])
             continue
         except:
             pass
         driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
-        sleep(35)
+        sleep(40)
         driver.close()
         print('Задание выполенено!')
         driver.switch_to.window(handles[0])
