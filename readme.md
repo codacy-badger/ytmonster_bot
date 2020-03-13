@@ -1,6 +1,7 @@
 Описание
 =====================
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/14d73ff6b20644f8b2107895d4895319)](https://app.codacy.com/manual/wenderccc/ytmonster_bot?utm_source=github.com&utm_medium=referral&utm_content=wenderccc/ytmonster_bot&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/27c716aaa77943cbb167a5086894f2ff)](https://app.codacy.com/manual/wenderccc/ytmonster_bot?utm_source=github.com&utm_medium=referral&utm_content=wenderccc/ytmonster_bot&utm_campaign=Badge_Grade_Dashboard)
 
 Бот для авто-выполнения заданий на YTmonster.ru. Прост в использовании и можно загрузить на дедик.
