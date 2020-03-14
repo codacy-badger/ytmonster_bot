@@ -63,7 +63,10 @@ def enable():
         break
 
 def subs():
-    driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
+    try:
+        driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
+    except:
+        pass
     while True:
         while True:
             try:
@@ -79,6 +82,7 @@ def subs():
         try:
             driver.switch_to.window(handles[1])
         except:
+            driver.find_element_by_xpath('//*[@id="choseTaskType1"]/div').click()
             print('Задания пока недоступны. Выполняем лайки.')
             return
         print('Задание началось')
@@ -92,7 +96,10 @@ def subs():
             continue
         else:
             pass
-        driver.find_element_by_css_selector('#subscribe-button > ytd-subscribe-button-renderer > paper-button').click()
+        try:
+            driver.find_element_by_css_selector('#subscribe-button > ytd-subscribe-button-renderer > paper-button').click()
+        except:
+            print("Подписка уже была выполнена")
         sleep(59)
         driver.close()
         print('Задание выполенено!')
@@ -124,7 +131,11 @@ def likes():
         return
     print('Задание началось')
     sleep(1)
-    driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
+    try:
+        driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
+    except:
+        print('Лайк уже был поставлен')
+        pass
     sleep(59)
     driver.close()
     print('Задание выполенено!')
