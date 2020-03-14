@@ -54,7 +54,6 @@ def enable():
     try:
         driver.find_element_by_css_selector('#news > div > div > div > div.col-lg-2.ml-lg-auto > div > img')
         print('Вход в YtMonster не был произведен, начинаем программу заново...')
-        driver.quit()
         return
     except:
         pass
@@ -113,26 +112,16 @@ def likes():
             except:
                 pass
     sleep(10)
-    print('Задание началось')
     handles = driver.window_handles
     try:
         driver.switch_to.window(handles[1])
     except:
         print('Произошла ошибка! Производим перезапуск...')
-        driver.quit()
+        driver.refresh()
         return
     print('Задание началось')
     sleep(1)
-    try:
-        driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer.style-scope.ytd-menu-renderer.force-icon-button.style-default-active')
-        print('Лайк уже поставлен! Ждем 35 сек. и идем дальше.')
-        sleep(35)
-        driver.close()
-        driver.switch_to.window(handles[0])
-        return
-    except:
-        pass
-    driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
+    driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1)').click()
     sleep(40)
     driver.close()
     print('Задание выполенено!')
