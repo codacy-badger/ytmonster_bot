@@ -77,11 +77,8 @@ def subs():
         try:
             driver.switch_to.window(handles[1])
         except:
-            print('Задания пока недоступны. Выполняем лайки')
-            driver.find_element_by_xpath('//*[@id="choseTaskType1"]/div').click()
-            likes()
-            sleep(2)
-            continue
+            print('Задания пока недоступны. Выполняем лайки.')
+            return
         print('Задание началось')
         sleep(1)
         try:
@@ -127,7 +124,7 @@ def likes():
     print('Задание началось')
     sleep(1)
     try:
-        driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer.style-scope.ytd-menu-renderer.force-icon-button.style-default-active > a')
+        driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer.style-scope.ytd-menu-renderer.force-icon-button.style-default-active')
         print('Лайк уже поставлен! Ждем 35 сек. и идем дальше.')
         sleep(35)
         driver.close()
@@ -146,3 +143,5 @@ print('Программа запускается')
 enable()
 while True:
     subs()
+    for i in range(10):
+        likes()
