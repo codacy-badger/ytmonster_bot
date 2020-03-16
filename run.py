@@ -139,11 +139,11 @@ def likes():
         return
     print('Задание началось')
     sleep(1)
-    try:
+    ltext = driver.find_element_by_css_selector('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/paper-tooltip/div').text()
+    if ltext == 'Больше не нравится':
+        print('Вы уже поставили лайк')
+    else:
         driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
-    except:
-        print('Лайк уже был поставлен')
-        pass
     sleep(59)
     driver.close()
     print('Задание выполенено!')
