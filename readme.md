@@ -25,6 +25,7 @@
 sudo apt-get update
 sudo apt-get install python3-pip
 sudo pip3 install selenium
+sudo pip3 install pyvirtualdisplay
 sudo apt-get install unzip
 wget https://chromedriver.storage.googleapis.com/80.0.3987.106/chromedriver_linux64.zip
 sudo unzip chromedriver_linux64.zip
