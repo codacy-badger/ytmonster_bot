@@ -6,10 +6,13 @@ from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from pyvirtualdisplay import Display
 
 
 def enable():
     while True:
+        display = Display(visible=0, size=(400, 300))
+        display.start()
         print('Вход в систему...')
         global chrome_options
         chrome_options = Options()
@@ -74,7 +77,12 @@ def subs():
                 break
             except:
                 driver.refresh()
-                driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
+                try:
+                    driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
+                except:
+                    print('Вход в YtMonster не был произведен, начинаем программу заново...')
+                    driver.quit()
+                    enable()
                 sleep(6)
         sleep(10)
         handles = driver.window_handles
