@@ -6,18 +6,16 @@ from time import sleep
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from pyvirtualdisplay import Display
 
 
 def enable():
     while True:
-        display = Display(visible=0, size=(400, 300))
-        display.start()
         print('Вход в систему...')
         global chrome_options
         chrome_options = Options()
+        chrome_options.add_argument('--log-level=OFF')
         chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--headless")
+        chrome_options.add_extension('captcha.crx')
         chrome_options.add_argument('--disable-audio-output')
         global driver
         driver = webdriver.Chrome(options=chrome_options)
@@ -30,8 +28,7 @@ def enable():
         driver.get('https://ytmonster.ru/')
         while True:
             try:
-                driver.find_element_by_css_selector(
-                    'body > table > tbody > tr > td > div.cf-browser-verification.cf-im-under-attack')
+                driver.find_element_by_css_selector('body > table > tbody > tr > td > div.cf-browser-verification.cf-im-under-attack')
                 sleep(2)
             except:
                 break
@@ -48,8 +45,8 @@ def enable():
         sleep(1)
         driver.find_element_by_xpath('//*[@id="booSubmit"]').click()
         sleep(5)
-        driver.get('https://www.youtube.com/')
-        cookies = pickle.load(open("cookiesgoogle.pkl", "rb"))
+        driver.get('https://www.vk.com/')
+        cookies = pickle.load(open("cookies.pkl", "rb"))
         for cookie in cookies:
             if 'expiry' in cookie:
                 del cookie['expiry']
@@ -59,6 +56,7 @@ def enable():
         try:
             driver.find_element_by_css_selector('#news > div > div > div > div.col-lg-2.ml-lg-auto > div > img')
             print('Вход в YtMonster не был произведен, начинаем программу заново...')
+            driver.exit()
             continue
         except:
             pass
@@ -66,94 +64,101 @@ def enable():
         break
 
 def subs():
-    try:
-        driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
-    except:
-        pass
+    sleep(1)
+    driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div[1]/div/div[2]/div[1]/div/div[3]/div').click()
+    sleep(1)
+    driver.find_element_by_xpath('//*[@id="choseTaskType14"]/div').click()
     while True:
+        sleep(6)
         while True:
             try:
                 driver.find_element_by_css_selector('input.btn:nth-child(2)').click()
                 break
             except:
                 driver.refresh()
-                try:
-                    driver.find_element_by_xpath('//*[@id="choseTaskType2"]/div').click()
-                except:
-                    print('Вход в YtMonster не был произведен, начинаем программу заново...')
-                    driver.quit()
-                    enable()
-                sleep(6)
-        sleep(10)
-        handles = driver.window_handles
-        print(handles)
-        try:
-            driver.switch_to.window(handles[1])
-        except:
-            driver.find_element_by_xpath('//*[@id="choseTaskType1"]/div').click()
-            print('Задания пока недоступны. Выполняем лайки.')
-            return
+                sleep(1)
+                driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div[1]/div/div[2]/div[1]/div/div[3]/div').click()
+                sleep(1)
+                driver.find_element_by_xpath('//*[@id="choseTaskType14"]/div').click()
+                continue
+        while True:
+            try:
+                handles = driver.window_handles
+                driver.switch_to.window(handles[1])
+                break
+            except:
+                driver.refresh()
+                sleep(1)
+                driver.find_element_by_xpath('//*[@id="content"]/div/div[3]/div[1]/div/div[2]/div[1]/div/div[3]/div').click()
+                sleep(1)
+                driver.find_element_by_xpath('//*[@id="choseTaskType14"]/div').click()
+                sleep(1)
+                driver.find_element_by_css_selector('input.btn:nth-child(2)').click()
+                sleep(4)
+                continue
         print('Задание началось')
         sleep(1)
         try:
-            subtext = driver.find_element_by_css_selector('#subscribe-button > ytd-subscribe-button-renderer > paper-button > yt-formatted-string').text
+            driver.find_element_by_xpath('//*[@id="join_button"]').click()
         except:
-            pass
-        if subtext == 'Вы подписаны':
-            print('Вы уже подписани')
-            continue
-        else:
-            pass
+            driver.find_element_by_xpath('//*[@id="public_subscribe"]').click()
         try:
-            driver.find_element_by_css_selector('#subscribe-button > ytd-subscribe-button-renderer > paper-button').click()
+            driver.find_element_by_xpath('//*[@id="box_layer"]/div[2]/div')
+            driver.find_element_by_xpath('//*[@id="recaptcha-anchor"]').click()
+            while True:
+                driver.find_element_by_xpath('//*[@id="solver-button"]').click()
+                sleep(5)
+                try:
+                    driver.find_element_by_xpath('/html/body/div/div/div[1]')
+                    continue
+                except:
+                    break
         except:
-            print("Подписка уже была выполнена")
-        sleep(59)
+            pass
+        sleep(4)
         driver.close()
         print('Задание выполенено!')
         driver.switch_to.window(handles[0])
-        sleep(2)
-
-def likes():
-    while True:
-        try:
-            driver.find_element_by_css_selector('input.btn:nth-child(2)').click()
-            break
-        except:
-            driver.refresh()
-            sleep(6)
-            try:
-                driver.find_element_by_css_selector('#news > div > div > div > div.col-lg-2.ml-lg-auto > div > img')
-                print('Вход в YtMonster не был произведен, начинаем программу заново...')
-                driver.quit()
-                return
-            except:
-                pass
-    sleep(10)
-    handles = driver.window_handles
-    try:
-        driver.switch_to.window(handles[1])
-    except:
-        print('Произошла ошибка! Производим перезапуск...')
-        driver.refresh()
-        return
-    print('Задание началось')
-    sleep(1)
-    ltext = driver.find_element_by_css_selector('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/paper-tooltip/div').text()
-    if ltext == 'Больше не нравится':
-        print('Вы уже поставили лайк')
-    else:
-        driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
-    sleep(59)
-    driver.close()
-    print('Задание выполенено!')
-    driver.switch_to.window(handles[0])
-    sleep(2)
+        
+## На доработке
+# def likes():
+#     while True:
+#         try:
+#             driver.find_element_by_css_selector('input.btn:nth-child(2)').click()
+#             break
+#         except:
+#             driver.refresh()
+#             sleep(6)
+#             try:
+#                 driver.find_element_by_css_selector('#news > div > div > div > div.col-lg-2.ml-lg-auto > div > img')
+#                 print('Вход в YtMonster не был произведен, начинаем программу заново...')
+#                 driver.quit()
+#                 return
+#             except:
+#                 pass
+#     sleep(10)
+#     handles = driver.window_handles
+#     try:
+#         driver.switch_to.window(handles[1])
+#     except:
+#         print('Произошла ошибка! Производим перезапуск...')
+#         driver.refresh()
+#         return
+#     print('Задание началось')
+#     sleep(1)
+#     ltext = driver.find_element_by_css_selector('/html/body/ytd-app/div/ytd-page-manager/ytd-watch-flexy/div[4]/div[1]/div/div[5]/div[2]/ytd-video-primary-info-renderer/div/div/div[3]/div/ytd-menu-renderer/div/ytd-toggle-button-renderer[1]/a/paper-tooltip/div').text()
+#     if ltext == 'Больше не нравится':
+#         print('Вы уже поставили лайк')
+#     else:
+#         driver.find_element_by_css_selector('#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a').click()
+#     sleep(59)
+#     driver.close()
+#     print('Задание выполенено!')
+#     driver.switch_to.window(handles[0])
+#     sleep(2)
 
 print('Программа запускается')
 
 enable()
 while True:
     subs()
-    for i in range(10):
-        likes()
